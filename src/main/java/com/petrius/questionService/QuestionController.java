@@ -24,14 +24,19 @@ public class QuestionController {
 
     @PostMapping("api/v1/questions")
     public ResponseEntity<Question> createQuestion(@RequestBody Question question){
-        if(!question.getQuestionText().isEmpty()){
+        Question savedQuestion = this.questionsRepository.saveAndFlush(question);
+
+        if(question.getAnswers() != null && !question.getQuestionText().isEmpty()){
             question
                     .getAnswers()
-                    .forEach(a -> a.setQuestion(question));
+                    .forEach(a -> {
+                        a.setQuestion(question);
+                        this.answerRepository.saveAndFlush(a);
+                    });
+            savedQuestion = this.questionsRepository.getReferenceById(savedQuestion.getId());
 
         }
 
-        Question savedQuestion = this.questionsRepository.saveAndFlush(question);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedQuestion);
     }
 
