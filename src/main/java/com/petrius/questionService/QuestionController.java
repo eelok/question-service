@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController("/questions")
+@RestController()
 public class QuestionController {
 
 
@@ -53,6 +53,35 @@ public class QuestionController {
             throw new RecordNotFoundException("question with id: " + id +" was not found");
         }
         return ResponseEntity.status(HttpStatus.OK).body(question.get());
+    }
+
+    @PutMapping("api/v1/questions/{id}")
+    public ResponseEntity<Question> editQuestion(@PathVariable long id, @RequestBody Question question){
+        Optional<Question> foundQuestion = this.questionsRepository.findById(id);
+        if(foundQuestion.isEmpty()){
+            throw new RecordNotFoundException("question with id: " + id +" was not found");
+        }
+
+        Question questionToUpdate = foundQuestion.get();
+        questionToUpdate.setQuestionText(question.getQuestionText());
+
+        Question updatedQuestion = this.questionsRepository.saveAndFlush(questionToUpdate);
+
+        List<Answer> existingAnswers = questionToUpdate.getAnswers();
+
+        for(int i = 0; i < existingAnswers.size(); i++){
+            Answer existingAnswer = existingAnswers.get(i);
+            Answer newAnswer = question.getAnswers().get(i);
+            existingAnswer.setAnswerText(newAnswer.getAnswerText());
+            existingAnswer.setCorrect(newAnswer.isCorrect());
+
+            this.answerRepository.saveAndFlush(existingAnswer);
+        }
+
+        Optional<Question> refreshedQuestion = this.questionsRepository.findById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(refreshedQuestion.get());
+
     }
 
 
