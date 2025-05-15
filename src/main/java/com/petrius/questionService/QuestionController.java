@@ -1,6 +1,7 @@
 package com.petrius.questionService;
 
 import com.petrius.questionService.exeption.RecordNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class QuestionController {
     }
 
     @PostMapping("api/v1/questions")
-    public ResponseEntity<Question> createQuestion(@RequestBody Question question){
+    public ResponseEntity<Question> createQuestion(@Valid @RequestBody Question question){
         Question savedQuestion = this.questionsRepository.saveAndFlush(question);
 
         if(question.getAnswers() != null && !question.getQuestionText().isEmpty()){
@@ -73,7 +74,7 @@ public class QuestionController {
             Answer existingAnswer = existingAnswers.get(i);
             Answer newAnswer = question.getAnswers().get(i);
             existingAnswer.setAnswerText(newAnswer.getAnswerText());
-            existingAnswer.setCorrect(newAnswer.isCorrect());
+            existingAnswer.setCorrect(newAnswer.getCorrect());
 
             this.answerRepository.saveAndFlush(existingAnswer);
         }
