@@ -1,0 +1,11 @@
+services:
+  db:
+      image: postgres
+      container_name: question-service
+      restart: always
+      environment:
+        - POSTGRES_USER=testUser
+        - POSTGRES_PASSWORD=password
+        - POSTGRES_DB=question-service
+      ports:
+        - 5433:5432

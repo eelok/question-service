@@ -5,16 +5,19 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Entity
+@ToString(exclude = "question")
 public class Answer {
 
     @Id
     @GeneratedValue
     private Long id;
     private String answerText;
-    private boolean isCorrect;
+
+    private boolean correct;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
