@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -40,4 +41,10 @@ public class QuizController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping("/api/v1/quizzes/{quizId}/questions")
+    public ResponseEntity<Quiz> getQuizByIdWillQuestions(@PathVariable Long quizId){
+        Quiz quiz = this.quizRepository.findById(quizId)
+                .orElseThrow(() -> new RecordNotFoundException("quiz with Id: " + quizId + " was not found"));
+        return ResponseEntity.status(HttpStatus.OK).body(quiz);
+    }
 }
