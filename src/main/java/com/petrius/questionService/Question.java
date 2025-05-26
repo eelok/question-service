@@ -1,10 +1,8 @@
 package com.petrius.questionService;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -33,5 +31,9 @@ public class Question {
     @NotEmpty(message = "Question must have at least one answer")
     @Valid
     private List<Answer> answers;
+
+    @ManyToMany(mappedBy = "questions")
+    @JsonIgnore
+    private List<Quiz> quizzes;
 
 }

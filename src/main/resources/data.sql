@@ -4,7 +4,7 @@ VALUES
 (102,'what is the longest river on earth?'),
 (103, 'how many colors does the rainbow have?');
 
-INSERT INTO answer(id, question_id, answer_text, is_correct)
+INSERT INTO answer(id, question_id, answer_text, correct)
 VALUES
 (201, 101, 8, true),
 (202, 101, 16, false),
