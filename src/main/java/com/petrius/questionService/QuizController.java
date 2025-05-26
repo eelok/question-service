@@ -47,4 +47,34 @@ public class QuizController {
                 .orElseThrow(() -> new RecordNotFoundException("quiz with Id: " + quizId + " was not found"));
         return ResponseEntity.status(HttpStatus.OK).body(quiz);
     }
+
+    @GetMapping("/api/v1/quizzes")
+    public ResponseEntity<List<Quiz>> getAllQuizzes(){
+        List<Quiz> quizzes = this.quizRepository.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(quizzes);
+    }
+
+    @DeleteMapping("/api/v1/quizzes/{quizId}/questions/{questionId}")
+    public ResponseEntity<Void> removeQuestionFromQuiz(
+            @PathVariable Long quizId,
+            @PathVariable Long questionId
+    ){
+        Quiz quiz = this.quizRepository.findById(quizId)
+                .orElseThrow(() -> new RecordNotFoundException("quiz with Id: " + quizId + " was not found")
+        );
+
+        Question question = this.questionsRepository.findById(questionId)
+                .orElseThrow(() -> new RecordNotFoundException("question with Id: " + questionId + " was not found"));
+
+        if(!quiz.getQuestions().contains(question)){
+            throw new RecordNotFoundException("question with id: " + questionId + " was not found in quiz " + quizId);
+        }
+
+        quiz.getQuestions().remove(question);
+
+        this.quizRepository.saveAndFlush(quiz);
+        return ResponseEntity.noContent().build();
+
+    }
 }
+
