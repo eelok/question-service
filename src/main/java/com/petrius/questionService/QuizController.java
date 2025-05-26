@@ -25,7 +25,7 @@ public class QuizController {
     }
 
     @PostMapping("/api/v1/quizzes/{quizId}/questions/{questionId}")
-    public ResponseEntity<Quiz> addQuestionToQuiz(
+    public ResponseEntity<Void> addQuestionToQuiz(
             @PathVariable Long quizId,
             @PathVariable Long questionId
     ){
@@ -33,7 +33,7 @@ public class QuizController {
                 .orElseThrow(() -> new RecordNotFoundException("quiz with Id: " + quizId + " was not found"));
 
         Question question = this.questionsRepository.findById(questionId)
-                .orElseThrow(() -> new RecordNotFoundException("question with id: " + " was not found"));
+                .orElseThrow(() -> new RecordNotFoundException("question with id: " + questionId+ " was not found"));
 
         quiz.getQuestions().add(question);
         this.quizRepository.saveAndFlush(quiz);
@@ -41,8 +41,8 @@ public class QuizController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/api/v1/quizzes/{quizId}/questions")
-    public ResponseEntity<Quiz> getQuizByIdWillQuestions(@PathVariable Long quizId){
+    @GetMapping("/api/v1/quizzes/{quizId}")
+    public ResponseEntity<Quiz> getQuizWithQuestions(@PathVariable Long quizId){
         Quiz quiz = this.quizRepository.findById(quizId)
                 .orElseThrow(() -> new RecordNotFoundException("quiz with Id: " + quizId + " was not found"));
         return ResponseEntity.status(HttpStatus.OK).body(quiz);
