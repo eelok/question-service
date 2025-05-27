@@ -1,5 +1,7 @@
 package com.petrius.questionService;
 
+import com.petrius.questionService.exeption.QuestionExistException;
+import com.petrius.questionService.exeption.QuestionMustContainAnswerException;
 import com.petrius.questionService.exeption.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,22 +19,19 @@ public class QuestionService implements IQuestionService {
     @Override
     public Question createQuestion(Question question) {
         if(question.getAnswers() == null || question.getAnswers().isEmpty()){
-            throw new RuntimeException("question must contain answers");
-        }
-        if(question.getQuestionText() == null || question.getQuestionText().trim().isEmpty()){
-            throw new RuntimeException("question must contain answers");
+            throw new QuestionMustContainAnswerException("question must contain answers");
         }
         Question foundQuestion = this.questionsRepository.findByQuestionText(question.getQuestionText().trim());
         if(foundQuestion != null){
-            throw new RuntimeException("such question is already exists");
+            throw new QuestionExistException("such question is already exists");
         }
         Question savedQuestion = this.questionsRepository.saveAndFlush(question);
 
         question
                 .getAnswers()
                 .forEach(a -> {
-                    a.setQuestion(question);
-                    this.answerRepository.saveAndFlush(a);
+                    a.setQuestion(savedQuestion);
+                    this.answerRepository.saveAndFlush(a);a
                 });
 
         return savedQuestion;
