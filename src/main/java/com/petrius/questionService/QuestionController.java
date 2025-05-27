@@ -13,33 +13,33 @@ public class QuestionController {
 
 
     @Autowired
-    private QuestionService questionService;
+    private IQuestionService iQuestionService;
 
 
     @PostMapping("api/v1/questions")
     public ResponseEntity<Question> createQuestion(@Valid @RequestBody Question question){
-            Question createdQuestion = this.questionService.createQuestion(question);
+            Question createdQuestion = this.iQuestionService.createQuestion(question);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion);
     }
 
     @GetMapping("api/v1/questions")
     public ResponseEntity<List<Question>> getAllQuestions() {
-        List<Question> questions = this.questionService.findAll();
+        List<Question> questions = this.iQuestionService.findAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(questions);
     }
 
     @GetMapping("api/v1/questions/{id}")
     public ResponseEntity<Question> getQuestion(@PathVariable long id){
-        Question question = this.questionService.findById(id);
+        Question question = this.iQuestionService.findById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(question);
     }
 
     @PutMapping("api/v1/questions/{id}")
     public ResponseEntity<Question> editQuestion(@PathVariable long id, @RequestBody Question question){
-        Question refreshedQuestion = this.questionService.editQuestion(id, question);
+        Question refreshedQuestion = this.iQuestionService.editQuestion(id, question);
 
         return ResponseEntity.status(HttpStatus.OK).body(refreshedQuestion);
     }
@@ -47,7 +47,7 @@ public class QuestionController {
 
     @DeleteMapping("api/v1/questions/{id}")
     public ResponseEntity<Void> deleteQuestion(@PathVariable long id){
-        this.questionService.deleteQuestion(id);
+        this.iQuestionService.deleteQuestion(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,6 +1,7 @@
 package com.petrius.questionService;
 
-import com.petrius.questionService.exeption.QuestionExistException;
+import com.petrius.questionService.exeption.QuestionExistsException;
+import com.petrius.questionService.exeption.QuestionIsMandatoryException;
 import com.petrius.questionService.exeption.QuestionMustContainAnswerException;
 import com.petrius.questionService.exeption.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class QuestionService implements IQuestionService {
         }
         Question foundQuestion = this.questionsRepository.findByQuestionText(question.getQuestionText().trim());
         if(foundQuestion != null){
-            throw new QuestionExistException("such question is already exists");
+            throw new QuestionExistsException("such question is already exists");
         }
         Question savedQuestion = this.questionsRepository.saveAndFlush(question);
 
@@ -31,7 +32,7 @@ public class QuestionService implements IQuestionService {
                 .getAnswers()
                 .forEach(a -> {
                     a.setQuestion(savedQuestion);
-                    this.answerRepository.saveAndFlush(a);a
+                    this.answerRepository.saveAndFlush(a);
                 });
 
         return savedQuestion;
@@ -49,6 +50,9 @@ public class QuestionService implements IQuestionService {
 
     @Override
     public Question editQuestion(long id, Question question) {
+        if(question.getQuestionText() == null || question.getQuestionText().trim().isEmpty()){
+            throw new QuestionIsMandatoryException("question texts can not be empty");
+        }
         Question questionToUpdate = findById(id);
 
         questionToUpdate.setQuestionText(question.getQuestionText());
