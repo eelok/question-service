@@ -13,4 +13,6 @@ public interface IQuestionService {
     Question editQuestion(long id, Question question);
 
     void deleteQuestion(long id);
+
+    Question findByQuestionText(String name);
 }

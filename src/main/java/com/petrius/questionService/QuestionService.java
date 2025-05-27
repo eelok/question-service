@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class QuestionService implements IQuestionService {
@@ -17,19 +16,26 @@ public class QuestionService implements IQuestionService {
 
     @Override
     public Question createQuestion(Question question) {
+        if(question.getAnswers() == null || question.getAnswers().isEmpty()){
+            throw new RuntimeException("question must contain answers");
+        }
+        if(question.getQuestionText() == null || question.getQuestionText().trim().isEmpty()){
+            throw new RuntimeException("question must contain answers");
+        }
+        Question foundQuestion = this.questionsRepository.findByQuestionText(question.getQuestionText().trim());
+        if(foundQuestion != null){
+            throw new RuntimeException("such question is already exists");
+        }
         Question savedQuestion = this.questionsRepository.saveAndFlush(question);
 
-        if (question.getAnswers() != null && !question.getQuestionText().isEmpty()) {
-            question
-                    .getAnswers()
-                    .forEach(a -> {
-                        a.setQuestion(question);
-                        this.answerRepository.saveAndFlush(a);
-                    });
-            return this.questionsRepository.getReferenceById(savedQuestion.getId());
-        };
-        //todo improve the exception
-        throw new RuntimeException("question must contain answers");
+        question
+                .getAnswers()
+                .forEach(a -> {
+                    a.setQuestion(question);
+                    this.answerRepository.saveAndFlush(a);
+                });
+
+        return savedQuestion;
     }
 
     @Override
@@ -75,5 +81,12 @@ public class QuestionService implements IQuestionService {
 
         this.answerRepository.deleteAllById(answerIds);
         this.questionsRepository.deleteById(id);
-    };
+    }
+
+    @Override
+    public Question findByQuestionText(String name) {
+       return this.questionsRepository.findByQuestionText(name);
+    }
+
+
 }

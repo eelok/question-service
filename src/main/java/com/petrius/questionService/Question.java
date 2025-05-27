@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Question {
     @OneToMany(mappedBy = "question")
     @JsonManagedReference
     @NotEmpty(message = "Question must have at least one answer")
+    @Size(max = 4, message = "Question can have maximum 4 answers")
     @Valid
     private List<Answer> answers;
 
