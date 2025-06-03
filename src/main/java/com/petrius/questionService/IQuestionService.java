@@ -6,7 +6,9 @@ public interface IQuestionService {
 
     Question createQuestion(Question question);
 
-    List<Question> findAll();
+    List<QuestionResponse> getAll();
+
+    QuestionResponse getById(long id);
 
     Question findById(long id);
 

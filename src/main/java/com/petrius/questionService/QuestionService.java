@@ -16,6 +16,8 @@ public class QuestionService implements IQuestionService {
     private QuestionsRepository questionsRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private QuestionMapper questionMapper;
 
     @Override
     public Question createQuestion(Question question) {
@@ -39,14 +41,34 @@ public class QuestionService implements IQuestionService {
     }
 
     @Override
-    public List<Question> findAll() {
-        return this.questionsRepository.findAll();
+    public List<QuestionResponse> getAll() {
+        List<Question> questions = this.questionsRepository.findAll();
+        List<QuestionResponse> allQuestion = questions
+                .stream()
+                .map(q -> this.questionMapper.toQuestionResponse(q))
+                .toList();
+
+        return allQuestion;
+    }
+
+
+    @Override
+    public QuestionResponse getById(long id) {
+
+        Question question = this.questionsRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new RecordNotFoundException("question with id: " + id + " was not found")
+                );
+        return this.questionMapper.toQuestionResponse(question);
     }
 
     @Override
     public Question findById(long id) {
-        return this.questionsRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("question with id: " + id + " was not found"));
+        //todo remove
+        return null;
     }
+
 
     @Override
     public Question editQuestion(long id, Question question) {

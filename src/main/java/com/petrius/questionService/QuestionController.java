@@ -24,15 +24,15 @@ public class QuestionController {
     }
 
     @GetMapping("api/v1/questions")
-    public ResponseEntity<List<Question>> getAllQuestions() {
-        List<Question> questions = this.iQuestionService.findAll();
+    public ResponseEntity<List<QuestionResponse>> getAllQuestions() {
+        List<QuestionResponse> questions = this.iQuestionService.getAll();
 
         return ResponseEntity.status(HttpStatus.OK).body(questions);
     }
 
     @GetMapping("api/v1/questions/{id}")
-    public ResponseEntity<Question> getQuestion(@PathVariable long id){
-        Question question = this.iQuestionService.findById(id);
+    public ResponseEntity<QuestionResponse> getQuestion(@PathVariable long id){
+        QuestionResponse question = this.iQuestionService.getById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(question);
     }
