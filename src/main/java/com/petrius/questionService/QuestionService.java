@@ -18,26 +18,30 @@ public class QuestionService implements IQuestionService {
     private AnswerRepository answerRepository;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private AnswerMapper answerMapper;
+
 
     @Override
-    public Question createQuestion(Question question) {
-        if(question.getAnswers() == null || question.getAnswers().isEmpty()){
+    public QuestionResponse createQuestion(CreateQuestionRequest questionRequest) {
+        if(questionRequest.getAnswers() == null || questionRequest.getAnswers().isEmpty()){
             throw new QuestionMustContainAnswerException("question must contain answers");
         }
-        Question foundQuestion = this.questionsRepository.findByQuestionText(question.getQuestionText().trim());
+        Question foundQuestion = this.questionsRepository.findByQuestionText(questionRequest.getQuestionText().trim());
         if(foundQuestion != null){
             throw new QuestionExistsException("such question is already exists");
         }
+        Question question = this.questionMapper.toQuestion(questionRequest);
+
         Question savedQuestion = this.questionsRepository.saveAndFlush(question);
+        savedQuestion.getAnswers().forEach(a -> {
+            a.setQuestion(savedQuestion);
+            this.answerRepository.saveAndFlush(a);
+        });
 
-        question
-                .getAnswers()
-                .forEach(a -> {
-                    a.setQuestion(savedQuestion);
-                    this.answerRepository.saveAndFlush(a);
-                });
+        QuestionResponse questionResponse = this.questionMapper.toQuestionResponse(savedQuestion);
+        return questionResponse;
 
-        return savedQuestion;
     }
 
     @Override

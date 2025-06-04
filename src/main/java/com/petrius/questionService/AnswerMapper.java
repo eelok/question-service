@@ -12,4 +12,12 @@ public class AnswerMapper {
                 .correct(answer.getCorrect())
                 .build();
     }
+
+    public Answer toAnswer(CreateAnswerRequest answerRequest){
+        return Answer.builder()
+                .answerText(answerRequest.getAnswerText())
+                .correct(answerRequest.getCorrect())
+                .build();
+
+    }
 }

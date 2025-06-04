@@ -25,4 +25,19 @@ public class QuestionMapper {
                 .answers(answersResponse)
                 .build();
     }
+
+    public Question toQuestion(CreateQuestionRequest questionRequest){
+        List<CreateAnswerRequest> answersRequest = questionRequest.getAnswers();
+        List<Answer> answers = answersRequest.stream()
+                .map(a -> this.answerMapper.toAnswer(a))
+                .toList();
+
+        Question question = Question
+                .builder()
+                .questionText(questionRequest.getQuestionText())
+                .answers(answers)
+                .build();
+        answers.forEach(a -> a.setQuestion(question));
+        return question;
+    }
 }

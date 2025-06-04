@@ -7,16 +7,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 
 import java.util.List;
 
 @Data @NoArgsConstructor @AllArgsConstructor
-@Entity
+@Entity @Builder
 @ToString(exclude = "answers")
 public class Question {
 

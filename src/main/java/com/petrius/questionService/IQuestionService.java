@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IQuestionService {
 
-    Question createQuestion(Question question);
+    QuestionResponse createQuestion(CreateQuestionRequest questionRequest);
 
     List<QuestionResponse> getAll();
 

@@ -17,8 +17,8 @@ public class QuestionController {
 
 
     @PostMapping("api/v1/questions")
-    public ResponseEntity<Question> createQuestion(@Valid @RequestBody Question question){
-            Question createdQuestion = this.iQuestionService.createQuestion(question);
+    public ResponseEntity<QuestionResponse> createQuestion(@Valid @RequestBody CreateQuestionRequest questionRequest){
+        QuestionResponse createdQuestion = this.iQuestionService.createQuestion(questionRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion);
     }
