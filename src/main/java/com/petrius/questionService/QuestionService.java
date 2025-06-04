@@ -4,6 +4,7 @@ import com.petrius.questionService.exeption.QuestionExistsException;
 import com.petrius.questionService.exeption.QuestionIsMandatoryException;
 import com.petrius.questionService.exeption.QuestionMustContainAnswerException;
 import com.petrius.questionService.exeption.RecordNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class QuestionService implements IQuestionService {
     private AnswerMapper answerMapper;
 
 
+    @Transactional
     @Override
     public QuestionResponse createQuestion(CreateQuestionRequest questionRequest) {
         if(questionRequest.getAnswers() == null || questionRequest.getAnswers().isEmpty()){
@@ -39,9 +41,7 @@ public class QuestionService implements IQuestionService {
             this.answerRepository.saveAndFlush(a);
         });
 
-        QuestionResponse questionResponse = this.questionMapper.toQuestionResponse(savedQuestion);
-        return questionResponse;
-
+        return this.questionMapper.toQuestionResponse(savedQuestion);
     }
 
     @Override
@@ -58,7 +58,6 @@ public class QuestionService implements IQuestionService {
 
     @Override
     public QuestionResponse getById(long id) {
-
         Question question = this.questionsRepository
                 .findById(id)
                 .orElseThrow(
@@ -101,14 +100,10 @@ public class QuestionService implements IQuestionService {
 
     @Override
     public void deleteQuestion(long id) {
-        Question question = findById(id);
-        List<Answer> answers = question.getAnswers();
-        List<Long> answerIds = answers
-                .stream()
-                .map(Answer::getId)
-                .toList();
+        QuestionResponse question = getById(id);
+        List<Long> answersId = question.getAnswers().stream().map(AnswerResponse::getId).toList();
 
-        this.answerRepository.deleteAllById(answerIds);
+        this.answerRepository.deleteAllById(answersId);
         this.questionsRepository.deleteById(id);
     }
 
