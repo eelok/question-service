@@ -38,8 +38,8 @@ public class QuestionController {
     }
 
     @PutMapping("api/v1/questions/{id}")
-    public ResponseEntity<Question> editQuestion(@PathVariable long id, @RequestBody Question question){
-        Question refreshedQuestion = this.iQuestionService.editQuestion(id, question);
+    public ResponseEntity<QuestionResponse> editQuestion(@PathVariable long id, @RequestBody UpdateQuestionRequest updateQuestionRequest){
+        QuestionResponse refreshedQuestion = this.iQuestionService.editQuestion(id, updateQuestionRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(refreshedQuestion);
     }

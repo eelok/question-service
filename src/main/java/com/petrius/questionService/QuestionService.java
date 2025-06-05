@@ -67,36 +67,29 @@ public class QuestionService implements IQuestionService {
     }
 
     @Override
-    public Question findById(long id) {
-        //todo remove
-        return null;
-    }
-
-
-    @Override
-    public Question editQuestion(long id, Question question) {
+    public QuestionResponse editQuestion(long id, UpdateQuestionRequest question) {
         if(question.getQuestionText() == null || question.getQuestionText().trim().isEmpty()){
             throw new QuestionIsMandatoryException("question texts can not be empty");
         }
-        Question questionToUpdate = findById(id);
+        Question questionToUpdate = this.questionsRepository
+                .findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("question with id: " + id + " was not found"));
 
         questionToUpdate.setQuestionText(question.getQuestionText());
-
         this.questionsRepository.saveAndFlush(questionToUpdate);
 
-        List<Answer> existingAnswers = questionToUpdate.getAnswers();
-
-        for(int i = 0; i < existingAnswers.size(); i++){
-            Answer existingAnswer = existingAnswers.get(i);
-            Answer newAnswer = question.getAnswers().get(i);
-            existingAnswer.setAnswerText(newAnswer.getAnswerText());
-            existingAnswer.setCorrect(newAnswer.getCorrect());
-
-            this.answerRepository.saveAndFlush(existingAnswer);
+        for(int i = 0; i < questionToUpdate.getAnswers().size(); i++){
+            Answer answer = questionToUpdate.getAnswers().get(i);
+            UpdateAnswerRequest update = question.getAnswers().get(i);
+            answer.setAnswerText(update.getAnswerText());
+            answer.setCorrect(update.getCorrect());
+            answer.setQuestion(questionToUpdate);
+            this.answerRepository.saveAllAndFlush(questionToUpdate.getAnswers());
         }
 
-        return findById(id);
+        return getById(questionToUpdate.getId());
     }
+
 
     @Override
     public void deleteQuestion(long id) {

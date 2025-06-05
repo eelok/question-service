@@ -10,9 +10,7 @@ public interface IQuestionService {
 
     QuestionResponse getById(long id);
 
-    Question findById(long id);
-
-    Question editQuestion(long id, Question question);
+    QuestionResponse editQuestion(long id, UpdateQuestionRequest question);
 
     void deleteQuestion(long id);
 
