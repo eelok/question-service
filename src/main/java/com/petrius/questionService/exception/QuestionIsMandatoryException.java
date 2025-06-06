@@ -1,12 +1,12 @@
-package com.petrius.questionService.exeption;
+package com.petrius.questionService.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class QuestionExistsException extends RuntimeException{
+public class QuestionIsMandatoryException extends RuntimeException{
 
-    public QuestionExistsException(String message){
+    public QuestionIsMandatoryException(String message) {
         super(message);
     }
 }

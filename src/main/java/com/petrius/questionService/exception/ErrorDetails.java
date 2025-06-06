@@ -1,4 +1,4 @@
-package com.petrius.questionService.exeption;
+package com.petrius.questionService.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

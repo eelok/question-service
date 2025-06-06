@@ -1,4 +1,4 @@
-package com.petrius.questionService.exeption;
+package com.petrius.questionService.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

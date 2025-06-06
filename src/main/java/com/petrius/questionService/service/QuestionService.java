@@ -2,10 +2,10 @@ package com.petrius.questionService.service;
 
 import com.petrius.questionService.entity.Answer;
 import com.petrius.questionService.entity.Question;
-import com.petrius.questionService.exeption.QuestionExistsException;
-import com.petrius.questionService.exeption.QuestionIsMandatoryException;
-import com.petrius.questionService.exeption.QuestionMustContainAnswerException;
-import com.petrius.questionService.exeption.RecordNotFoundException;
+import com.petrius.questionService.exception.QuestionExistsException;
+import com.petrius.questionService.exception.QuestionIsMandatoryException;
+import com.petrius.questionService.exception.QuestionMustContainAnswerException;
+import com.petrius.questionService.exception.RecordNotFoundException;
 import com.petrius.questionService.mapper.AnswerMapper;
 import com.petrius.questionService.mapper.QuestionMapper;
 import com.petrius.questionService.model.AnswerResponse;
