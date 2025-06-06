@@ -1,9 +1,18 @@
-package com.petrius.questionService;
+package com.petrius.questionService.service;
 
+import com.petrius.questionService.entity.Answer;
+import com.petrius.questionService.entity.Question;
 import com.petrius.questionService.exeption.QuestionExistsException;
 import com.petrius.questionService.exeption.QuestionIsMandatoryException;
 import com.petrius.questionService.exeption.QuestionMustContainAnswerException;
 import com.petrius.questionService.exeption.RecordNotFoundException;
+import com.petrius.questionService.mapper.AnswerMapper;
+import com.petrius.questionService.mapper.QuestionMapper;
+import com.petrius.questionService.model.AnswerResponse;
+import com.petrius.questionService.model.CreateQuestionRequest;
+import com.petrius.questionService.model.QuestionResponse;
+import com.petrius.questionService.repository.AnswerRepository;
+import com.petrius.questionService.repository.QuestionsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +76,7 @@ public class QuestionService implements IQuestionService {
     }
 
     @Override
-    public QuestionResponse editQuestion(long id, UpdateQuestionRequest question) {
+    public QuestionResponse editQuestion(long id, AnswerResponse.UpdateQuestionRequest question) {
         if(question.getQuestionText() == null || question.getQuestionText().trim().isEmpty()){
             throw new QuestionIsMandatoryException("question texts can not be empty");
         }
@@ -80,7 +89,7 @@ public class QuestionService implements IQuestionService {
 
         for(int i = 0; i < questionToUpdate.getAnswers().size(); i++){
             Answer answer = questionToUpdate.getAnswers().get(i);
-            UpdateAnswerRequest update = question.getAnswers().get(i);
+            AnswerResponse.UpdateAnswerRequest update = question.getAnswers().get(i);
             answer.setAnswerText(update.getAnswerText());
             answer.setCorrect(update.getCorrect());
             answer.setQuestion(questionToUpdate);

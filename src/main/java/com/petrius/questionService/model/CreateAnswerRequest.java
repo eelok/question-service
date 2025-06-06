@@ -1,4 +1,4 @@
-package com.petrius.questionService;
+package com.petrius.questionService.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

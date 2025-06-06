@@ -1,4 +1,10 @@
-package com.petrius.questionService;
+package com.petrius.questionService.mapper;
+import com.petrius.questionService.model.AnswerResponse;
+import com.petrius.questionService.model.CreateAnswerRequest;
+import com.petrius.questionService.model.CreateQuestionRequest;
+import com.petrius.questionService.model.QuestionResponse;
+import com.petrius.questionService.entity.Answer;
+import com.petrius.questionService.entity.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

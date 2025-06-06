@@ -1,5 +1,6 @@
 package com.petrius.questionService;
 
+import com.petrius.questionService.entity.Question;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

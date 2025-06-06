@@ -1,5 +1,9 @@
-package com.petrius.questionService;
+package com.petrius.questionService.controller;
 
+import com.petrius.questionService.model.AnswerResponse;
+import com.petrius.questionService.model.CreateQuestionRequest;
+import com.petrius.questionService.service.IQuestionService;
+import com.petrius.questionService.model.QuestionResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +42,7 @@ public class QuestionController {
     }
 
     @PutMapping("api/v1/questions/{id}")
-    public ResponseEntity<QuestionResponse> editQuestion(@PathVariable long id, @RequestBody UpdateQuestionRequest updateQuestionRequest){
+    public ResponseEntity<QuestionResponse> editQuestion(@PathVariable long id, @RequestBody AnswerResponse.UpdateQuestionRequest updateQuestionRequest){
         QuestionResponse refreshedQuestion = this.iQuestionService.editQuestion(id, updateQuestionRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(refreshedQuestion);

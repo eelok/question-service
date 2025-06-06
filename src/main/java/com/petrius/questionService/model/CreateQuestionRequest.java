@@ -1,4 +1,4 @@
-package com.petrius.questionService;
+package com.petrius.questionService.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UpdateQuestionRequest {
+public class CreateQuestionRequest {
 
     @NotBlank(message = "Question text is mandatory")
     private String questionText;
 
     @NotEmpty(message = "Question must have at least one answer")
-    public List<UpdateAnswerRequest> answers;
+    public List<CreateAnswerRequest> answers;
 
 }

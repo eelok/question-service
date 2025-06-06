@@ -1,4 +1,4 @@
-package com.petrius.questionService;
+package com.petrius.questionService.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

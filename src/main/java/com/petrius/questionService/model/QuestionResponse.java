@@ -1,17 +1,17 @@
-package com.petrius.questionService;
+package com.petrius.questionService.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class AnswerResponse {
+public class QuestionResponse {
 
     private Long id;
-    private String answerText;
-    private Boolean correct;
-
+    private String questionText;
+    private List<AnswerResponse> answers;
 }

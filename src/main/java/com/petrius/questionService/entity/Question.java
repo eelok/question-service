@@ -1,7 +1,8 @@
-package com.petrius.questionService;
+package com.petrius.questionService.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.petrius.questionService.Quiz;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

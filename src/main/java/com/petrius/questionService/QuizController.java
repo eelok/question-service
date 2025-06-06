@@ -1,6 +1,8 @@
 package com.petrius.questionService;
 
+import com.petrius.questionService.entity.Question;
 import com.petrius.questionService.exeption.RecordNotFoundException;
+import com.petrius.questionService.repository.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
